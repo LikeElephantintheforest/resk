@@ -1,56 +1,84 @@
 package infra
 
-import "github.com/tietang/props/kvs"
+import (
+	log "github.com/sirupsen/logrus"
+	"github.com/tietang/props/kvs"
+	"reflect"
+)
 
+//应用程序
 type BootApplication struct {
-	conf           kvs.ConfigSource
-	starterContext StarterContext
+	IsTest     bool
+	conf       kvs.ConfigSource
+	starterCtx StarterContext
 }
 
+//构造系统
 func New(conf kvs.ConfigSource) *BootApplication {
-	application := &BootApplication{
-		conf:           conf,
-		starterContext: StarterContext{},
-	}
-	application.starterContext[KeyProps] = conf
-	return application
+	e := &BootApplication{conf: conf, starterCtx: StarterContext{}}
+	e.starterCtx.SetProps(conf)
+	return e
 }
 
 func (b *BootApplication) Start() {
-	//1 。 初始化所有starter
+	//1. 初始化starter
 	b.init()
-	//2 。 安装所有的starter
+	//2. 安装starter
 	b.setup()
-	//3 。 启动starter
+	//3. 启动starter
+	b.start()
 }
 
-func (b *BootApplication) init() {
-	for _, starter := range StarterRegister.AllStarters() {
-		starter.Init(b.starterContext)
+//程序初始化
+func (e *BootApplication) init() {
+	log.Info("Initializing starters...")
+	for _, v := range GetStarters() {
+		typ := reflect.TypeOf(v)
+		log.Debugf("Initializing: PriorityGroup=%d,Priority=%d,type=%s", v.PriorityGroup(), v.Priority(), typ.String())
+		v.Init(e.starterCtx)
 	}
 }
 
-func (b *BootApplication) setup() {
-	for _, starter := range StarterRegister.AllStarters() {
-		starter.Setup(b.starterContext)
+//程序安装
+func (e *BootApplication) setup() {
+
+	log.Info("Setup starters...")
+	for _, v := range GetStarters() {
+		typ := reflect.TypeOf(v)
+		log.Debug("Setup: ", typ.String())
+		v.Setup(e.starterCtx)
 	}
+
 }
 
-func (b *BootApplication) start() {
-	for i, starter := range StarterRegister.AllStarters() {
-		starter.Start(b.starterContext)
+//程序开始运行，开始接受调用
+func (e *BootApplication) start() {
 
-		//如果是阻塞性质
-		if starter.StartBlocking() {
-			//如果是最后一个要启动的，直接启动
-			if i+1 == len(StarterRegister.AllStarters()) {
-				starter.Start(b.starterContext)
-				//如果不是，则使用goroutine 异步启动,防止阻塞后面的starter
+	log.Info("Starting starters...")
+	for i, v := range GetStarters() {
+
+		typ := reflect.TypeOf(v)
+		log.Debug("Starting: ", typ.String())
+		if v.StartBlocking() {
+			if i+1 == len(GetStarters()) {
+				v.Start(e.starterCtx)
 			} else {
-				go starter.Start(b.starterContext)
+				go v.Start(e.starterCtx)
 			}
 		} else {
-			starter.Start(b.starterContext)
+			v.Start(e.starterCtx)
 		}
+
+	}
+}
+
+//程序开始运行，开始接受调用
+func (e *BootApplication) Stop() {
+
+	log.Info("Stoping starters...")
+	for _, v := range GetStarters() {
+		typ := reflect.TypeOf(v)
+		log.Debug("Stoping: ", typ.String())
+		v.Stop(e.starterCtx)
 	}
 }
