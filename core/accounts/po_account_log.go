@@ -39,44 +39,43 @@ func (po *AccountLog) FromTransferDTO(dto *services.AccountTransferDTO) {
 	po.Decs = dto.Decs
 }
 
-//
-//func (po *AccountLog) ToDTO() *services.AccountLogDTO {
-//	dto := &services.AccountLogDTO{
-//
-//		TradeNo:         po.TradeNo,
-//		LogNo:           po.LogNo,
-//		AccountNo:       po.AccountNo,
-//		TargetAccountNo: po.TargetAccountNo,
-//		UserId:          po.UserId,
-//		Username:        po.Username,
-//		TargetUserId:    po.TargetUserId,
-//		TargetUsername:  po.TargetUsername,
-//		Amount:          po.Amount,
-//		Balance:         po.Balance,
-//		ChangeType:      po.ChangeType,
-//		ChangeFlag:      po.ChangeFlag,
-//		Status:          po.Status,
-//		Decs:            po.Decs,
-//		CreatedAt:       po.CreatedAt,
-//	}
-//	return dto
-//}
-//
-//func (po *AccountLog) FromDTO(dto *services.AccountLogDTO) {
-//
-//	po.TradeNo = dto.TradeNo
-//	po.LogNo = dto.LogNo
-//	po.AccountNo = dto.AccountNo
-//	po.TargetAccountNo = dto.TargetAccountNo
-//	po.UserId = dto.UserId
-//	po.Username = dto.Username
-//	po.TargetUserId = dto.TargetUserId
-//	po.TargetUsername = dto.TargetUsername
-//	po.Amount = dto.Amount
-//	po.Balance = dto.Balance
-//	po.ChangeType = dto.ChangeType
-//	po.ChangeFlag = dto.ChangeFlag
-//	po.Status = dto.Status
-//	po.Decs = dto.Decs
-//	po.CreatedAt = dto.CreatedAt
-//}
+func (po *AccountLog) ToDTO() *services.AccountLogDTO {
+	dto := &services.AccountLogDTO{
+
+		TradeNo:         po.TradeNo,
+		LogNo:           po.LogNo,
+		AccountNo:       po.AccountNo,
+		TargetAccountNo: po.TargetAccountNo,
+		UserId:          po.UserId,
+		Username:        po.Username,
+		TargetUserId:    po.TargetUserId,
+		TargetUsername:  po.TargetUsername,
+		Amount:          po.Amount,
+		Balance:         po.Balance,
+		ChangeType:      po.ChangeType,
+		ChangeFlag:      po.ChangeFlag,
+		Status:          po.Status,
+		Decs:            po.Decs,
+		CreatedAt:       po.CreatedAt,
+	}
+	return dto
+}
+
+func (po *AccountLog) FromDTO(dto *services.AccountLogDTO) {
+
+	po.TradeNo = dto.TradeNo
+	po.LogNo = dto.LogNo
+	po.AccountNo = dto.AccountNo
+	po.TargetAccountNo = dto.TargetAccountNo
+	po.UserId = dto.UserId
+	po.Username = dto.Username
+	po.TargetUserId = dto.TargetUserId
+	po.TargetUsername = dto.TargetUsername
+	po.Amount = dto.Amount
+	po.Balance = dto.Balance
+	po.ChangeType = dto.ChangeType
+	po.ChangeFlag = dto.ChangeFlag
+	po.Status = dto.Status
+	po.Decs = dto.Decs
+	po.CreatedAt = dto.CreatedAt
+}

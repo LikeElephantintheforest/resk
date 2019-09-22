@@ -48,6 +48,7 @@ func (domain *accountDomain) createAccountLog() {
 	domain.accountLog.TargetAccountNo = domain.account.AccountNo
 	domain.accountLog.TargetUserId = domain.account.UserId
 	domain.accountLog.TargetUsername = domain.account.Username.String
+
 	//交易金额
 	domain.accountLog.Amount = domain.account.Balance
 	domain.accountLog.Balance = domain.account.Balance
@@ -96,7 +97,6 @@ func (domain *accountDomain) Create(dto services.AccountDTO) (*services.AccountD
 
 }
 
-//
 //func (a *accountDomain) Transfer(dto services.AccountTransferDTO) (status services.TransferedStatus, err error) {
 //	err = base.Tx(func(runner *dbx.TxRunner) error {
 //		ctx := base.WithValueContext(context.Background(), runner)
@@ -222,46 +222,46 @@ func (a *accountDomain) GetAccount(accountNo string) *services.AccountDTO {
 	return account.ToDTO()
 }
 
-//
-////根据用户ID来查询红包账户信息
-//func (a *accountDomain) GetEnvelopeAccountByUserId(userId string) *services.AccountDTO {
-//	accountDao := AccountDao{}
-//	var account *Account
-//
-//	err := base.Tx(func(runner *dbx.TxRunner) error {
-//		accountDao.runner = runner
-//		account = accountDao.GetByUserId(userId, int(services.EnvelopeAccountType))
-//		return nil
-//	})
-//	if err != nil {
-//		return nil
-//	}
-//	if account == nil {
-//		return nil
-//	}
-//	return account.ToDTO()
-//
-//}
-//
-////根据用户ID和账户类型来查询账户信息
-//func (a *accountDomain) GetAccountByUserIdAndType(userId string, accountType services.AccountType) *services.AccountDTO {
-//	accountDao := AccountDao{}
-//	var account *Account
-//
-//	err := base.Tx(func(runner *dbx.TxRunner) error {
-//		accountDao.runner = runner
-//		account = accountDao.GetByUserId(userId, int(accountType))
-//		return nil
-//	})
-//	if err != nil {
-//		return nil
-//	}
-//	if account == nil {
-//		return nil
-//	}
-//	return account.ToDTO()
-//
-//}
+//根据用户ID来查询红包账户信息
+func (a *accountDomain) GetEnvelopeAccountByUserId(userId string) *services.AccountDTO {
+	accountDao := AccountDao{}
+	var account *Account
+
+	err := base.Tx(func(runner *dbx.TxRunner) error {
+		accountDao.runner = runner
+		account = accountDao.GetByUserId(userId, int(services.EnvelopeAccountType))
+		return nil
+	})
+	if err != nil {
+		return nil
+	}
+	if account == nil {
+		return nil
+	}
+	return account.ToDTO()
+
+}
+
+//根据用户ID和账户类型来查询账户信息
+func (a *accountDomain) GetAccountByUserIdAndType(userId string, accountType services.AccountType) *services.AccountDTO {
+	accountDao := AccountDao{}
+	var account *Account
+
+	err := base.Tx(func(runner *dbx.TxRunner) error {
+		accountDao.runner = runner
+		account = accountDao.GetByUserId(userId, int(accountType))
+		return nil
+	})
+	if err != nil {
+		return nil
+	}
+	if account == nil {
+		return nil
+	}
+	return account.ToDTO()
+
+}
+
 //
 ////根据流水ID来查询账户流水
 //func (a *accountDomain) GetAccountLog(logNo string) *services.AccountLogDTO {

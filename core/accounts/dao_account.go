@@ -50,13 +50,10 @@ func (dao *AccountDao) GetByUserId(userId string, accountType int) *Account {
 
 //账户数据的插入
 func (dao *AccountDao) Insert(a *Account) (id int64, err error) {
-
 	rs, err := dao.runner.Insert(a)
-
 	if err != nil {
 		return 0, err
 	}
-
 	return rs.LastInsertId()
 }
 
