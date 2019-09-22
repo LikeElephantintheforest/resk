@@ -61,14 +61,14 @@ func (dao *AccountDao) Insert(a *Account) (id int64, err error) {
 }
 
 //账户余额的更新
-func (dao *AccountDao) updateBalance(accountNo string, amount decimal.Decimal) (row int64, err error) {
+func (dao *AccountDao) UpdateBalance(accountNo string, amount decimal.Decimal) (row int64, err error) {
 
 	sql := "update account " +
 		" set balance=balance+CAST(? AS DECIMAL(30,6))" +
 		" where account_no=? " +
 		" and balance>=-1*CAST(? AS DECIMAL(30,6)) "
 
-	rs, err := dao.runner.Exec(sql, amount, accountNo)
+	rs, err := dao.runner.Exec(sql, amount, accountNo, amount)
 
 	if err != nil {
 		return 0, err
