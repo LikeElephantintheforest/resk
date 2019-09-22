@@ -34,6 +34,7 @@ func (s *DbxDatabaseStarter) Setup(ctx infra.StarterContext) {
 		User:            source.GetDefault("mysql.username", ""),
 		Password:        source.GetDefault("mysql.password", ""),
 		Host:            source.GetDefault("mysql.address", ""),
+		Database:        source.GetDefault("mysql.database", ""),
 		MaxOpenConns:    5,
 		MaxIdleConns:    2,
 		ConnMaxLifetime: 7 * time.Hour,
